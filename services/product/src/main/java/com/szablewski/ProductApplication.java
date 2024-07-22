@@ -1,4 +1,4 @@
-package com.szablewski.product;
+package com.szablewski;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

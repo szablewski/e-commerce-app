@@ -1,6 +1,6 @@
 package com.szablewski.category;
 
-import com.szablewski.product.product.Product;
+import com.szablewski.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

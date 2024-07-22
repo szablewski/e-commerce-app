@@ -1,4 +1,4 @@
-package com.szablewski.product.product;
+package com.szablewski.product;
 
 import com.szablewski.category.Category;
 import jakarta.persistence.*;
