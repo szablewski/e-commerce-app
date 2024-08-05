@@ -2,6 +2,8 @@ package com.szablewski.order;
 
 import com.szablewski.customer.CustomerClient;
 import com.szablewski.exception.BusinessException;
+import com.szablewski.kafka.OrderConfirmation;
+import com.szablewski.kafka.OrderProducer;
 import com.szablewski.orderLine.OrderLineRequest;
 import com.szablewski.orderLine.OrderLineService;
 import com.szablewski.product.ProductClient;
@@ -18,11 +20,12 @@ public class OrderService {
     private final ProductClient productClient;
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
+    private final OrderProducer orderProducer;
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerId(request.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exists with the provided ID::"));
 
-        this.productClient.purchaseProducts(request.products());
+        var purchasedProducts =  this.productClient.purchaseProducts(request.products());
 
         var order = this.repository.save(mapper.toOrder(request));
 
@@ -37,8 +40,16 @@ public class OrderService {
             );
         }
 
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        request.reference(),
+                        request.amount(),
+                        request.paymentMethod(),
+                        customer,
+                        purchasedProducts
+                )
+        );
 
-
-        return null;
+        return order.getOrderId();
     }
 }
