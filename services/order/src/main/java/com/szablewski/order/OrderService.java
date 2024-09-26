@@ -6,6 +6,8 @@ import com.szablewski.kafka.OrderConfirmation;
 import com.szablewski.kafka.OrderProducer;
 import com.szablewski.orderLine.OrderLineRequest;
 import com.szablewski.orderLine.OrderLineService;
+import com.szablewski.payment.PaymentClient;
+import com.szablewski.payment.PaymentRequest;
 import com.szablewski.product.ProductClient;
 import com.szablewski.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +27,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerId(request.customerId())
@@ -44,6 +47,15 @@ public class OrderService {
                     )
             );
         }
+
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getOrderId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
