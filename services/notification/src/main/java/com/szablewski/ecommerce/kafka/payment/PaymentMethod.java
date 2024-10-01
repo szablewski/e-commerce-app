@@ -1,7 +1,6 @@
-package com.szablewski.order;
+package com.szablewski.ecommerce.kafka.payment;
 
 public enum PaymentMethod {
-
     PAYPAL,
     CREDIT_CARD,
     VISA,
