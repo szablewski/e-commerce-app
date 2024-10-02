@@ -1,10 +1,11 @@
 package com.szablewski.ecommerce.kafka;
 
+import com.szablewski.ecommerce.email.EmailService;
 import com.szablewski.ecommerce.kafka.order.OrderConfirmation;
 import com.szablewski.ecommerce.kafka.payment.PaymentConfirmation;
 import com.szablewski.ecommerce.notification.Notification;
 import com.szablewski.ecommerce.notification.NotificationRepository;
-import com.szablewski.ecommerce.notification.NotificationType;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 
 import static com.szablewski.ecommerce.notification.NotificationType.ORDER_CONFIRMATION;
 import static com.szablewski.ecommerce.notification.NotificationType.PAYMENT_CONFIRMATION;
-import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +22,10 @@ import static java.lang.String.format;
 public class NotificationConsumer {
 
     private final NotificationRepository repository;
-    // private final EmailService emailService;
+    private final EmailService emailService;
 
     @KafkaListener(topics = "payment-topic")
-    public void consumePaymentSuccessNotification(PaymentConfirmation paymentConfirmation) {
+    public void consumePaymentSuccessNotification(PaymentConfirmation paymentConfirmation) throws MessagingException {
         log.info("Consuming the message from payment-topic Topic:: {}", paymentConfirmation);
         repository.save(
                 Notification.builder()
@@ -35,7 +35,13 @@ public class NotificationConsumer {
                         .build()
         );
 
-        // todo send email
+        var customerName = paymentConfirmation.customerFirstName() + " " + paymentConfirmation.customerLastName();
+        emailService.sendPaymentSuccessEmail(
+                paymentConfirmation.customerEmail(),
+                customerName,
+                paymentConfirmation.amount(),
+                paymentConfirmation.orderReference()
+        );
     }
 
     @KafkaListener(topics = "order-topic")
