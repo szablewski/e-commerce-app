@@ -4,9 +4,9 @@ import com.szablewski.category.Category;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductMapper {
+class ProductMapper {
 
-    public Product toProduct(ProductRequest request) {
+    Product toProduct(final ProductRequest request) {
         return Product.builder()
                 .productId(request.productId())
                 .name(request.name())
@@ -20,7 +20,7 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductResponse toProductResponse(Product product) {
+    ProductResponse toProductResponse(final Product product) {
         return new ProductResponse(
                 product.getProductId(),
                 product.getName(),
@@ -33,7 +33,7 @@ public class ProductMapper {
         );
     }
 
-    public ProductPurchaseResponse toProductPurchaseResponse(Product product, double quantity) {
+    ProductPurchaseResponse toProductPurchaseResponse(final Product product,final double quantity) {
         return new ProductPurchaseResponse(
                 product.getProductId(),
                 product.getName(),

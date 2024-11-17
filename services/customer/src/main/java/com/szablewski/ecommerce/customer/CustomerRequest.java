@@ -3,7 +3,7 @@ package com.szablewski.ecommerce.customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
-public record CustomerRequest(
+record CustomerRequest(
         String customerId,
         @NotNull(message = "Customer firstname is required")
         String firstname,

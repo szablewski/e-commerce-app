@@ -5,32 +5,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-public class ProductController {
+class ProductController {
 
     private final ProductService service;
 
     @PostMapping
-    public ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
-        return ResponseEntity.ok(service.createProduct(request));
+    ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
+        var productId = service.createProduct(request);
+        var uri = URI.create("/api/v1/products/" + productId);
+
+        return ResponseEntity.created(uri).build();
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(@RequestBody List<ProductPurchaseRequest> request) {
+    ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(@RequestBody List<ProductPurchaseRequest> request) {
         return ResponseEntity.ok(service.purchaseProducts(request));
     }
 
     @GetMapping("/{product-id}")
-    public ResponseEntity<ProductResponse> findById(@PathVariable("product-id") Integer productId) {
+    ResponseEntity<ProductResponse> findById(@PathVariable("product-id") Integer productId) {
         return ResponseEntity.ok(service.findById(productId));
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> findAll() {
+    ResponseEntity<List<ProductResponse>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 @Getter
 @Validated
-public class Address {
+class Address {
 
     private String street;
     private String houseNumber;

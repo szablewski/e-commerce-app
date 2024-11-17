@@ -2,7 +2,7 @@ package com.szablewski.product;
 
 import jakarta.validation.constraints.NotNull;
 
-public record ProductPurchaseRequest(
+record ProductPurchaseRequest(
         @NotNull(message = "Product is mandatory")
         Integer productId,
         @NotNull(message = "Quantity is mandatory")

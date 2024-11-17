@@ -1,4 +1,4 @@
-package com.szablewski.handler;
+package com.szablewski.ecommerce.handler;
 
 import java.util.Map;
 

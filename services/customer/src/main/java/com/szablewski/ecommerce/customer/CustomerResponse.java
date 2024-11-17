@@ -1,6 +1,6 @@
 package com.szablewski.ecommerce.customer;
 
-public record CustomerResponse(
+record CustomerResponse(
         String customerId,
         String firstname,
         String lastname,

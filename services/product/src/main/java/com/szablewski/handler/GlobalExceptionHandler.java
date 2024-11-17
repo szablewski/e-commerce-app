@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductPurchaseException.class)
-    public ResponseEntity<String> handle(ProductPurchaseException exp) {
+    ResponseEntity<String> handle(ProductPurchaseException exp) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(exp.getMessage());
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handle(EntityNotFoundException exp) {
+    ResponseEntity<String> handle(EntityNotFoundException exp) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(exp.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException exp) {
+    ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException exp) {
         var errors = new HashMap<String, String>();
 
         exp.getBindingResult().getAllErrors()
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
                 });
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_ACCEPTABLE)
                 .body(new ErrorResponse(errors));
     }
 }

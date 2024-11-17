@@ -3,26 +3,28 @@ package com.szablewski.product;
 import com.szablewski.exception.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+@Slf4j
+class ProductService {
 
     private final ProductRepository repository;
     private final ProductMapper mapper;
-    public Integer createProduct(ProductRequest request) {
+
+    Integer createProduct(ProductRequest request) {
         var product = mapper.toProduct(request);
 
         return repository.save(product).getProductId();
     }
 
-    public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) {
+    List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) {
         var productIds = request
                 .stream()
                 .map(ProductPurchaseRequest::productId)
@@ -51,23 +53,25 @@ public class ProductService {
 
             var newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
             product.setAvailableQuantity(newAvailableQuantity);
+
             repository.save(product);
             purchasedProduct.add(mapper.toProductPurchaseResponse(product, productRequest.quantity()));
         }
 
+        log.info("Success product purchased:: {}", purchasedProduct);
         return purchasedProduct;
     }
 
-    public ProductResponse findById(Integer productId) {
+    ProductResponse findById(Integer productId) {
         return repository.findById(productId)
                 .map(mapper::toProductResponse)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Product not found withe the ID:: %s", productId)));
     }
 
-    public List<ProductResponse> findAll() {
+    List<ProductResponse> findAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::toProductResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -3,8 +3,9 @@ package com.szablewski.ecommerce.customer;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerMapper {
-    public Customer toCustomer(CustomerRequest request) {
+class CustomerMapper {
+
+    Customer toCustomer(CustomerRequest request) {
         if (request == null) {
             return null;
         }
@@ -12,12 +13,12 @@ public class CustomerMapper {
                 .customerId(request.customerId())
                 .firstname(request.firstname())
                 .lastname(request.lastname())
-                .email(request.email() )
+                .email(request.email())
                 .address(request.address())
                 .build();
     }
 
-    public CustomerResponse fromCustomer(Customer customer) {
+    CustomerResponse fromCustomer(Customer customer) {
         return new CustomerResponse(
                 customer.getCustomerId(),
                 customer.getFirstname(),

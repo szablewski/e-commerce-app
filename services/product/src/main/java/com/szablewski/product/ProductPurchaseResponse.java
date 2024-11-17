@@ -2,7 +2,7 @@ package com.szablewski.product;
 
 import java.math.BigDecimal;
 
-public record ProductPurchaseResponse(
+record ProductPurchaseResponse(
         Integer productId,
         String name,
         String description,
