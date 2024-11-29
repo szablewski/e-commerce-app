@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentService {
+class PaymentService {
 
     private final PaymentRepository repository;
     private final PaymentMapper mapper;
     private final NotificationProducer producer;
 
-    public Integer createPayment(PaymentRequest request) {
+    Integer createPayment(PaymentRequest request) {
         var payment = repository.save(mapper.toPayment(request));
 
         producer.sendNotification(

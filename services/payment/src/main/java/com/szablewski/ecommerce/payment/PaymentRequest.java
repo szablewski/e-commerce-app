@@ -2,7 +2,7 @@ package com.szablewski.ecommerce.payment;
 
 import java.math.BigDecimal;
 
-public record PaymentRequest(
+record PaymentRequest(
         Integer id,
         BigDecimal amount,
         PaymentMethod paymentMethod,

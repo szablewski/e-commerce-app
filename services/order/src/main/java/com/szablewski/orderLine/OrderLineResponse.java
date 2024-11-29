@@ -1,6 +1,6 @@
 package com.szablewski.orderLine;
 
-public record OrderLineResponse(
+record OrderLineResponse(
         Integer id,
         double quantity
 ) {

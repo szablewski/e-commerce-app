@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
-public class KafkaPaymentTopicConfig {
+class KafkaPaymentTopicConfig {
 
     @Bean
-    public NewTopic paymentTopic() {
+    NewTopic paymentTopic() {
         return TopicBuilder
                 .name("payment-topic")
                 .build();

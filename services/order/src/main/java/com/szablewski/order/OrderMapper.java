@@ -3,9 +3,9 @@ package com.szablewski.order;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderMapper {
+class OrderMapper {
 
-    public Order toOrder(OrderRequest orderRequest) {
+    Order toOrder(OrderRequest orderRequest) {
         return Order.builder()
                 .orderId(orderRequest.orderId())
                 .customerId(orderRequest.customerId())
@@ -15,7 +15,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderResponse fromOrder(Order order) {
+    OrderResponse fromOrder(Order order) {
         return new OrderResponse(
                 order.getOrderId(),
                 order.getReference(),

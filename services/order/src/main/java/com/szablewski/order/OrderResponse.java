@@ -2,7 +2,7 @@ package com.szablewski.order;
 
 import java.math.BigDecimal;
 
-public record OrderResponse(
+record OrderResponse(
         Integer id,
         String reference,
         BigDecimal amount,

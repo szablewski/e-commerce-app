@@ -15,11 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
+class OrderService {
 
     private final OrderRepository repository;
     private final CustomerClient customerClient;
@@ -29,11 +30,11 @@ public class OrderService {
     private final OrderProducer orderProducer;
     private final PaymentClient paymentClient;
 
-    public Integer createOrder(OrderRequest request) {
+    Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerId(request.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exists with the provided ID::"));
 
-        var purchasedProducts =  this.productClient.purchaseProducts(request.products());
+        var purchasedProducts = this.productClient.purchaseProducts(request.products());
 
         var order = this.repository.save(mapper.toOrder(request));
 
@@ -70,16 +71,16 @@ public class OrderService {
         return order.getOrderId();
     }
 
-    public List<OrderResponse> findAll() {
+    List<OrderResponse> findAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::fromOrder)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public OrderResponse findById(Integer orderId) {
+    OrderResponse findById(Integer orderId) {
         return repository.findById(orderId)
                 .map(mapper::fromOrder)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with provide ID: %d", orderId)));
+                .orElseThrow(() -> new EntityNotFoundException(format("No order found with provide ID: %d", orderId)));
     }
 }

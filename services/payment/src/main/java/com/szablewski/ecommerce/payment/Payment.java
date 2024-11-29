@@ -18,7 +18,7 @@ import static jakarta.persistence.EnumType.STRING;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Payment {
+class Payment {
 
     @Id
     @GeneratedValue

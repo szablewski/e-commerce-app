@@ -80,7 +80,7 @@ public class EmailService {
         }
     }
 
-    public Map<String, Object> getPaymentVariables(String customerName, BigDecimal amount, String orderReference) {
+    Map<String, Object> getPaymentVariables(String customerName, BigDecimal amount, String orderReference) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("customerName", customerName);
         variables.put("amount", amount);
@@ -88,7 +88,7 @@ public class EmailService {
         return variables;
     }
 
-    public Map<String, Object> getOrderVariables(String customerName, BigDecimal amount, String orderReference, List<Product> products) {
+    Map<String, Object> getOrderVariables(String customerName, BigDecimal amount, String orderReference, List<Product> products) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("customerName", customerName);
         variables.put("totalAmount", amount);

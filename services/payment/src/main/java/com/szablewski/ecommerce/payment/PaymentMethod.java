@@ -2,7 +2,7 @@ package com.szablewski.ecommerce.payment;
 
 public enum PaymentMethod {
 
-     PAYPAL,
+    PAYPAL,
     CREDIT_CARD,
     VISA,
     MASTER_CARD,

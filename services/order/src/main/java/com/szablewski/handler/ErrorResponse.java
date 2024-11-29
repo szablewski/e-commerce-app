@@ -2,7 +2,7 @@ package com.szablewski.handler;
 
 import java.util.Map;
 
-public record ErrorResponse(
+record ErrorResponse(
         Map<String, String> errors
 ) {
 }
